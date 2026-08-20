@@ -18,15 +18,24 @@ class DOI2ref(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
+		# Window settings
 		self.setWindowTitle(FULL_NAME)
 		self.size_ = get_window_dimension()
 		self.resize(self.size_)
+
+		# We use these functions to scale fonts with the window size to comply
+		# with different sized monitors.
+		self.title_fontsize = get_title_fontsize(self.size_)
+		self.text_fontsize = get_text_fontsize(self.size_)
 		
+		## Start main UI 
+
 		self.main_widget = QWidget()
 		self.main_layout = QVBoxLayout()
 
+		# Title label
 		self.title = QLabel('doi2ref')
-		self.title.setFont(QFont('Monospace', get_title_fontsize(self.size_)))
+		self.title.setFont(QFont('Monospace', self.title_fontsize)
 		self.main_layout.addWidget(self.title, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.main_layout.addStretch()
