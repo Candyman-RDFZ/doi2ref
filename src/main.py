@@ -11,7 +11,7 @@ from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout
 import sys
 
-from core.config import FULL_NAME, get_window_dimension, get_title_fontsize
+from core.config import FULL_NAME, get_window_dimension, get_title_fontsize, get_text_fontsize
 
 
 class DOI2ref(QMainWindow):
@@ -35,7 +35,7 @@ class DOI2ref(QMainWindow):
 
 		# Title label
 		self.title = QLabel('doi2ref')
-		self.title.setFont(QFont('Monospace', self.title_fontsize)
+		self.title.setFont(QFont('Monospace', self.title_fontsize))
 		self.main_layout.addWidget(self.title, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.main_layout.addStretch()
