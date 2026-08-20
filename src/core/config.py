@@ -19,7 +19,7 @@ FULL_NAME = NAME + ' ' + VERSION
 
 def get_window_dimension() -> QSize:
 	screen = QGuiApplication.primaryScreen()
-	width = screen.size().width() * 3 // 5
+	width = screen.size().width() * 2 // 5
 	height = width * 4 // 5
 	return QSize(width, height)
 
