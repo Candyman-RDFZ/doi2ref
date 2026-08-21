@@ -8,11 +8,11 @@ Handles the front-end UI.
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QFrame, QWidget, QVBoxLayout, QStackedLayout
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QFrame, QPushButton, QWidget, QVBoxLayout, QHBoxLayout, QStackedLayout
 import sys
 
-from core.config import FULL_NAME, get_window_dimension, get_title_fontsize, get_text_fontsize
-
+from core.config import FULL_NAME
+from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, change_widget_fontsize
 
 class DOI2ref(QMainWindow):
 	def __init__(self):
@@ -54,6 +54,26 @@ class DOI2ref(QMainWindow):
 		self.start_layout = QVBoxLayout()
 		self.start_widget = QWidget()
 		self.start_widget.setLayout(self.start_layout)
+
+		self.add_doi_label = QLabel('Put your DOI number(s) below:')
+		self.start_layout.addWidget(self.add_doi_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		self.utility_button_widget = QWidget()
+		self.utility_button_layout = QHBoxLayout()
+		self.utility_button_widget.setLayout(self.utility_button_layout)
+		
+		self.add_doi_button = QPushButton('Add')
+		change_widget_fontsize(self.add_doi_button, self.text_fontsize)
+		self.utility_button_layout.addWidget(self.add_doi_button)
+
+		self.delete_doi_button = QPushButton('Delete')
+		change_widget_fontsize(self.delete_doi_button, self.text_fontsize)
+		self.utility_button_layout.addWidget(self.delete_doi_button)
+		
+		self.utility_button_widget.setMaximumWidth(self.size().width() // 3)
+		self.start_layout.addWidget(self.utility_button_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		self.start_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 		self.content_layout.addWidget(self.start_widget)
 
 		self.main_layout.addLayout(self.content_layout)
@@ -67,6 +87,7 @@ class DOI2ref(QMainWindow):
 		self.main_layout.addWidget(self.footer_sep)
 
 		self.footer_label = QLabel('doi2ref by <a href="https://github.com/Candyman-RDFZ">Candy_man</a>. <a href="https://github.com/Candyman-RDFZ/doi2ref">GitHub repository</a>.')
+		change_widget_fontsize(self.footer_label, self.text_fontsize)
 		self.footer_label.setOpenExternalLinks(True)
 		self.main_layout.addWidget(self.footer_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
