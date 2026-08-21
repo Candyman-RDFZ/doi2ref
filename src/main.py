@@ -14,6 +14,8 @@ import sys
 from core.config import FULL_NAME
 from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, change_widget_fontsize
 
+from ui.doi_table import DOITableWidget
+
 class DOI2ref(QMainWindow):
 	def __init__(self):
 		super().__init__()
@@ -65,6 +67,9 @@ class DOI2ref(QMainWindow):
 		self.add_doi_button = QPushButton('Add')
 		change_widget_fontsize(self.add_doi_button, self.text_fontsize)
 		self.utility_button_layout.addWidget(self.add_doi_button)
+		
+		# We do not need an 'edit' button since the user can double-click the
+		# cell to change the text.
 
 		self.delete_doi_button = QPushButton('Delete')
 		change_widget_fontsize(self.delete_doi_button, self.text_fontsize)
@@ -72,6 +77,11 @@ class DOI2ref(QMainWindow):
 		
 		self.utility_button_widget.setMaximumWidth(self.size().width() // 3)
 		self.start_layout.addWidget(self.utility_button_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		self.doi_table_widget = DOITableWidget(self.add_doi_button, self.delete_doi_button, self.size().width() * 2 // 3, self)
+		change_widget_fontsize(self.doi_table_widget, self.text_fontsize)
+		self.doi_table_widget.setMinimumWidth(self.size().width() * 3 // 5)
+		self.start_layout.addWidget(self.doi_table_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.start_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 		self.content_layout.addWidget(self.start_widget)
