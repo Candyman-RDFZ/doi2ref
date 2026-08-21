@@ -25,8 +25,8 @@ def get_window_dimension() -> QSize:
 
 # Fontsize query functions
 
-def get_title_fontsize(window_size : QSize):
+def get_title_fontsize(window_size: QSize) -> int:
 	return window_size.height() // 30
 
-def get_text_fontsize(window_size : QSize):
+def get_text_fontsize(window_size: QSize) -> int:
 	return window_size.height() // 50

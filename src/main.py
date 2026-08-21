@@ -70,7 +70,6 @@ class DOI2ref(QMainWindow):
 		self.footer_label.setOpenExternalLinks(True)
 		self.main_layout.addWidget(self.footer_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-		self.main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 		self.main_layout.setContentsMargins(5, 5, 5, 5)
 		self.main_layout.setSpacing(5)
 		self.main_widget.setLayout(self.main_layout)
