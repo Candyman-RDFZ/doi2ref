@@ -43,7 +43,7 @@ class DOI2ref(QMainWindow):
 
 		# Title label
 		self.title = QLabel('doi2ref')
-		self.title.setFont(QFont('Monospace', self.title_fontsize))
+		self.title.setFont(QFont('Consolas', self.title_fontsize))
 		self.main_layout.addWidget(self.title, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		# Separator
