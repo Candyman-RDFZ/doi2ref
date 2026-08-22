@@ -2,20 +2,20 @@ from PySide6.QtCore import Qt, QMimeData
 from PySide6.QtGui import QDrag
 from PySide6.QtWidgets import QAbstractItemView, QDialog, QTableWidget, QTableWidgetItem, QPushButton, QHeaderView
 
-from .add_dialog import AddDialog
+from .set_doi_dialog import AddEditDialog
 
 class DOITableWidget(QTableWidget):
-	def __init__(self, add_button: QPushButton, del_button: QPushButton, dialog_min_size: int, parent=None):
+	def __init__(self, add_button: QPushButton, edit_button: QPushButton, del_button: QPushButton, dialog_min_size: int, parent=None):
 		super().__init__(parent)
 		self.parent = parent
 		self.dialog_min_size = dialog_min_size
 
 		self.add_button = add_button
+		self.edit_button = edit_button
 		self.del_button = del_button
 
 		self.setColumnCount(2)
 		self.setHorizontalHeaderLabels(['Reference Name', 'DOI Number'])
-		self.verticalHeader().setVisible(False)
 		self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 		self.setSelectionBehavior(QAbstractItemView.SelectRows)
 		self.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -28,12 +28,13 @@ class DOITableWidget(QTableWidget):
 		self.dragged_row = -1
 		
 		self.add_button.clicked.connect(self.add_row)
+		self.edit_button.clicked.connect(self.edit_row)
 		self.del_button.clicked.connect(self.del_row)
-		self.itemSelectionChanged.connect(self.update_del_button)
-		self.update_del_button()
+		self.itemSelectionChanged.connect(self.update_del_edit_button)
+		self.update_del_edit_button()
 	
 	def add_row(self):
-		dialog = AddDialog(self.dialog_min_size, self.parent)
+		dialog = AddEditDialog(self.dialog_min_size, self.parent, False)
 		if dialog.exec() != QDialog.Accepted:
 			return None
 		name, doi = dialog.values()
@@ -42,6 +43,21 @@ class DOITableWidget(QTableWidget):
 		self.setItem(row_cnt, 0, QTableWidgetItem(name))
 		self.setItem(row_cnt, 1, QTableWidgetItem(doi))
 	
+	def edit_row(self):
+		sel_rows = self.selectionModel().selectedRows()
+		if not sel_rows:
+			return None
+		row = sel_rows[0].row()
+		ref_name = self.item(row, 0).text()
+		doi_num = self.item(row, 1).text()
+		
+		dialog = AddEditDialog(self.dialog_min_size, self.parent, True, ref_name, doi_num)
+		if dialog.exec() != QDialog.Accepted:
+			return None
+		name, doi = dialog.values()
+		self.setItem(row, 0, QTableWidgetItem(name))
+		self.setItem(row, 1, QTableWidgetItem(doi))
+
 	def del_row(self):
 		sel_rows = self.selectionModel().selectedRows()
 		if not sel_rows:
@@ -49,8 +65,9 @@ class DOITableWidget(QTableWidget):
 		row = sel_rows[0].row()
 		self.removeRow(row)
 	
-	def update_del_button(self):
+	def update_del_edit_button(self):
 		has_sel = bool(self.selectionModel().selectedRows())
+		self.edit_button.setEnabled(has_sel)
 		self.del_button.setEnabled(has_sel)
 
 	def startDrag(self, supported_actions):
