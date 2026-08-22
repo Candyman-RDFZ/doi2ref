@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QDialog, QDialogButtonBox, QFormLayout, QLineEdit,
 class AddEditDialog(QDialog):
 	def __init__(self, min_size, parent=None, edit=False, edit_name='', doi_num=''):
 		super().__init__(parent)
-		self.setWindowTitle('Add reference')
+		self.setWindowTitle(('Add' if not edit else 'Edit') + ' Reference - doi2ref')
 		self.name_edit = QLineEdit()
 		self.doi_edit = QLineEdit()
 

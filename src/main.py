@@ -12,7 +12,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QFrame, QPushBu
 import sys
 
 from core.config import FULL_NAME
-from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, change_widget_fontsize
+from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, get_footer_fontsize, change_widget_fontsize
 
 from ui.doi_table import DOITableWidget
 
@@ -33,6 +33,7 @@ class DOI2ref(QMainWindow):
 		# with differently sized monitors.
 		self.title_fontsize = get_title_fontsize(self.size_)
 		self.text_fontsize = get_text_fontsize(self.size_)
+		self.footer_fontsize = get_footer_fontsize(self.size_)
 		
 		## Start main UI 
 
@@ -65,14 +66,17 @@ class DOI2ref(QMainWindow):
 		self.utility_button_widget.setLayout(self.utility_button_layout)
 		
 		self.add_doi_button = QPushButton('Add')
+		self.add_doi_button.setShortcut('Ctrl+N')
 		change_widget_fontsize(self.add_doi_button, self.text_fontsize)
 		self.utility_button_layout.addWidget(self.add_doi_button)
 		
 		self.edit_doi_button = QPushButton('Edit')
+		self.edit_doi_button.setShortcut('Ctrl+E')
 		change_widget_fontsize(self.add_doi_button, self.text_fontsize)
 		self.utility_button_layout.addWidget(self.edit_doi_button)
 
 		self.delete_doi_button = QPushButton('Delete')
+		self.delete_doi_button.setShortcut('Del')
 		change_widget_fontsize(self.delete_doi_button, self.text_fontsize)
 		self.utility_button_layout.addWidget(self.delete_doi_button)
 		
@@ -97,13 +101,18 @@ class DOI2ref(QMainWindow):
 		self.footer_sep.setFrameShape(QFrame.HLine)
 		self.main_layout.addWidget(self.footer_sep)
 
-		self.footer_label = QLabel('doi2ref by <a href="https://github.com/Candyman-RDFZ">Candy_man</a>. <a href="https://github.com/Candyman-RDFZ/doi2ref">GitHub repository</a>.')
-		change_widget_fontsize(self.footer_label, self.text_fontsize)
-		self.footer_label.setOpenExternalLinks(True)
-		self.main_layout.addWidget(self.footer_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+		self.copyright_label = QLabel('Copyright (c) 2026 <a href="https://github.com/Candyman-RDFZ">Candy_man</a>.')
+
+		self.misc_label = QLabel('<a href="https://github.com/Candyman-RDFZ/doi2ref">GitHub repository</a>.')
+		change_widget_fontsize(self.copyright_label, self.footer_fontsize)
+		change_widget_fontsize(self.misc_label, self.footer_fontsize)
+		self.copyright_label.setOpenExternalLinks(True)
+		self.misc_label.setOpenExternalLinks(True)
+		self.main_layout.addWidget(self.copyright_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+		self.main_layout.addWidget(self.misc_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.main_layout.setContentsMargins(5, 5, 5, 5)
-		self.main_layout.setSpacing(5)
+		self.main_layout.setSpacing(2)
 		self.main_widget.setLayout(self.main_layout)
 		self.setCentralWidget(self.main_widget)
 

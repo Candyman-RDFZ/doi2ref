@@ -24,6 +24,9 @@ def get_title_fontsize(window_size: QSize) -> int:
 def get_text_fontsize(window_size: QSize) -> int:
 	return window_size.height() // 50
 
+def get_footer_fontsize(window_size: QSize) -> int:
+	return window_size.height() // 60
+
 # Change the widget font to text_fontsize
 def change_widget_fontsize(widget: QWidget, size: int) -> None:
 	font = widget.font()
