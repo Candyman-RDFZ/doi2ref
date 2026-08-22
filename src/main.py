@@ -74,7 +74,7 @@ class DOI2ref(QMainWindow):
 		
 		self.edit_doi_button = QPushButton('Edit')
 		self.edit_doi_button.setShortcut('Ctrl+E')
-		change_widget_fontsize(self.add_doi_button, self.text_fontsize)
+		change_widget_fontsize(self.edit_doi_button, self.text_fontsize)
 		self.utility_button_layout.addWidget(self.edit_doi_button)
 
 		self.delete_doi_button = QPushButton('Delete')
