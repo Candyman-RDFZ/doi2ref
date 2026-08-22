@@ -65,6 +65,7 @@ class DOI2ref(QMainWindow):
 		self.utility_button_layout = QHBoxLayout()
 		self.utility_button_widget.setLayout(self.utility_button_layout)
 		
+		# Control buttons
 		self.add_doi_button = QPushButton('Add')
 		self.add_doi_button.setShortcut('Ctrl+N')
 		change_widget_fontsize(self.add_doi_button, self.text_fontsize)
@@ -83,10 +84,24 @@ class DOI2ref(QMainWindow):
 		self.utility_button_widget.setMaximumWidth(self.size().width() // 3)
 		self.start_layout.addWidget(self.utility_button_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
+		# Table that shows the DOI(s)
 		self.doi_table_widget = DOITableWidget(self.add_doi_button, self.edit_doi_button, self.delete_doi_button, self.size().width() * 2 // 3, self)
 		change_widget_fontsize(self.doi_table_widget, self.text_fontsize)
 		self.doi_table_widget.setMinimumWidth(self.size().width() * 3 // 5)
 		self.start_layout.addWidget(self.doi_table_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		# Import/Export functionality
+
+		self.import_export_layout = QHBoxLayout()
+		self.import_export_widget = QWidget()
+		self.import_export_widget.setLayout(self.import_export_layout)
+		self.import_draft = QPushButton('Import Draft')
+		self.import_export_layout.addWidget(self.import_draft)
+		
+		self.export_draft = QPushButton('Export Draft')
+		self.import_export_layout.addWidget(self.export_draft)
+		self.import_export_widget.setMaximumWidth(self.size().width() // 3)
+		self.start_layout.addWidget(self.import_export_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.start_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 		self.content_layout.addWidget(self.start_widget)
