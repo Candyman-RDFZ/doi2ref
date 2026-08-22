@@ -11,8 +11,9 @@ from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QFrame, QPushButton, QWidget, QVBoxLayout, QHBoxLayout, QStackedLayout
 import sys
 
-from core.config import FULL_NAME
+from core.config import FULL_NAME, NAME, ORG
 from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, get_footer_fontsize, change_widget_fontsize
+from core.drafts import export_draft_file
 
 from ui.doi_table import DOITableWidget
 
@@ -96,9 +97,13 @@ class DOI2ref(QMainWindow):
 		self.import_export_widget = QWidget()
 		self.import_export_widget.setLayout(self.import_export_layout)
 		self.import_draft = QPushButton('Import Draft')
+		change_widget_fontsize(self.import_draft, self.text_fontsize)
 		self.import_export_layout.addWidget(self.import_draft)
 		
 		self.export_draft = QPushButton('Export Draft')
+		change_widget_fontsize(self.export_draft, self.text_fontsize)
+		self.export_draft.clicked.connect(lambda: export_draft_file(self, self.doi_table_widget.get_value()))
+
 		self.import_export_layout.addWidget(self.export_draft)
 		self.import_export_widget.setMaximumWidth(self.size().width() // 3)
 		self.start_layout.addWidget(self.import_export_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
@@ -116,7 +121,7 @@ class DOI2ref(QMainWindow):
 		self.footer_sep.setFrameShape(QFrame.HLine)
 		self.main_layout.addWidget(self.footer_sep)
 
-		self.copyright_label = QLabel('Copyright (c) 2026 <a href="https://github.com/Candyman-RDFZ">Candy_man</a>.')
+		self.copyright_label = QLabel('Copyright © 2026 <a href="https://github.com/Candyman-RDFZ">Candy_man</a>.')
 
 		self.misc_label = QLabel('<a href="https://github.com/Candyman-RDFZ/doi2ref">GitHub repository</a>.')
 		change_widget_fontsize(self.copyright_label, self.footer_fontsize)
@@ -133,6 +138,8 @@ class DOI2ref(QMainWindow):
 
 
 app = QApplication([])
+app.setOrganizationName(ORG)
+app.setApplicationName(NAME)
 
 doi2ref = DOI2ref()
 doi2ref.show()

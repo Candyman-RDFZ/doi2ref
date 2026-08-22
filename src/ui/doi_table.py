@@ -26,6 +26,7 @@ class DOITableWidget(QTableWidget):
 		self.setDragDropMode(QAbstractItemView.DragDrop)
 		self.setDefaultDropAction(Qt.MoveAction)
 		self.dragged_row = -1
+		self.row_cnt = 0
 		
 		self.add_button.clicked.connect(self.add_row)
 		self.edit_button.clicked.connect(self.edit_row)
@@ -38,10 +39,11 @@ class DOITableWidget(QTableWidget):
 		if dialog.exec() != QDialog.Accepted:
 			return None
 		name, doi = dialog.values()
-		row_cnt = self.rowCount()
-		self.insertRow(row_cnt)
-		self.setItem(row_cnt, 0, QTableWidgetItem(name))
-		self.setItem(row_cnt, 1, QTableWidgetItem(doi))
+		
+		self.insertRow(self.row_cnt)
+		self.setItem(self.row_cnt, 0, QTableWidgetItem(name))
+		self.setItem(self.row_cnt, 1, QTableWidgetItem(doi))
+		self.row_cnt += 1 
 	
 	def edit_row(self):
 		sel_rows = self.selectionModel().selectedRows()
@@ -64,6 +66,7 @@ class DOITableWidget(QTableWidget):
 			return None
 		row = sel_rows[0].row()
 		self.removeRow(row)
+		self.row_cnt -= 1
 	
 	def update_del_edit_button(self):
 		has_sel = bool(self.selectionModel().selectedRows())
@@ -113,10 +116,21 @@ class DOITableWidget(QTableWidget):
 		event.acceptProposedAction()
 	
 	def swap_rows(self, row1, row2):
-		for col in range(self.columnCount()):
+		for col in range(2):
 			item1 = self.item(row1, col)
 			item2 = self.item(row2, col)
 			item1 = item1.clone() if item1 else None
 			item2 = item2.clone() if item2 else None
 			self.setItem(row1, col, item2)
 			self.setItem(row2, col, item1)
+
+	def get_value(self):
+		if self.row_cnt == 0:
+			return None
+		res = {}
+		res['has_data'] = False
+		for row in range(self.row_cnt):
+			ref_name = self.item(row, 0).text()
+			doi_num = self.item(row, 1).text()
+			res[str(row + 1)] = {'ref_name': ref_name, 'doi_num': doi_num}
+		return res

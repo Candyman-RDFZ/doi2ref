@@ -10,3 +10,4 @@ Stores the constants used throughout the program.
 NAME = 'doi2ref'
 VERSION = 'INDEV'
 FULL_NAME = NAME + ' ' + VERSION
+ORG = 'Candy_man'
