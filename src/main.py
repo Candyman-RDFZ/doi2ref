@@ -13,7 +13,7 @@ import sys
 
 from core.config import FULL_NAME, NAME, ORG
 from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, get_footer_fontsize, change_widget_fontsize
-from core.drafts import export_draft_file
+from core.drafts import import_draft_file, export_draft_file
 
 from ui.doi_table import DOITableWidget
 
@@ -98,6 +98,7 @@ class DOI2ref(QMainWindow):
 		self.import_export_widget.setLayout(self.import_export_layout)
 		self.import_draft = QPushButton('Import Draft')
 		change_widget_fontsize(self.import_draft, self.text_fontsize)
+		self.import_draft.clicked.connect(lambda: import_draft_file(self, self.doi_table_widget))
 		self.import_export_layout.addWidget(self.import_draft)
 		
 		self.export_draft = QPushButton('Export Draft')

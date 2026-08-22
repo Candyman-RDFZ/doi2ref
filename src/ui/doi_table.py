@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt, QMimeData
 from PySide6.QtGui import QDrag
-from PySide6.QtWidgets import QAbstractItemView, QDialog, QTableWidget, QTableWidgetItem, QPushButton, QHeaderView
+from PySide6.QtWidgets import QAbstractItemView, QDialog, QTableWidget, QTableWidgetItem, QPushButton, QHeaderView, QMessageBox
 
 from .set_doi_dialog import AddEditDialog
 
@@ -129,8 +129,28 @@ class DOITableWidget(QTableWidget):
 			return None
 		res = {}
 		res['has_data'] = False
+		res['count'] = self.row_cnt
 		for row in range(self.row_cnt):
 			ref_name = self.item(row, 0).text()
 			doi_num = self.item(row, 1).text()
 			res[str(row + 1)] = {'ref_name': ref_name, 'doi_num': doi_num}
 		return res
+	
+	def set_value(self, data):
+		if self.row_cnt != 0:
+			choice = QMessageBox.warning(self.parent, 'Warning - doi2ref', 'There is already data entered. Importing will erase the current data. Do you really want to import?', buttons=QMessageBox.Yes | QMessageBox.No, defaultButton = QMessageBox.No)
+			
+			if choice == QMessageBox.No:
+				return None
+
+		self.clearContents()
+		
+		cur_cnt = int(data['count'])
+		self.setRowCount(cur_cnt)
+		self.row_cnt = cur_cnt
+		for i in range(cur_cnt):
+			cur_dict = data[str(i + 1)]
+			ref_name = cur_dict['ref_name']
+			doi_num = cur_dict['doi_num']
+			self.setItem(i, 0, QTableWidgetItem(ref_name))
+			self.setItem(i, 1, QTableWidgetItem(doi_num))

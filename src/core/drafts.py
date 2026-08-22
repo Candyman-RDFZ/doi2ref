@@ -2,12 +2,13 @@ from PySide6.QtCore import QSettings, QStandardPaths
 from PySide6.QtWidgets import QFileDialog
 import json
 
-def import_draft_file(parent):
+def import_draft_file(parent, doi_table):
 	settings = QSettings()
 	last_dir = settings.value('last_dir', QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
 	filename, _ = QFileDialog.getOpenFileName(parent, 'Import Draft - doi2ref', last_dir, 'JSON Files (*.json)')
-	data = json.load(filename)
-	return data
+	with open(filename, 'r') as file:
+		data = json.load(file)
+	doi_table.set_value(data)
 
 def export_draft_file(parent, data):
 	settings = QSettings()
