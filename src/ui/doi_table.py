@@ -164,3 +164,4 @@ class DOITableWidget(QTableWidget):
 			# We reset the table. Refilling support will be added later. 
 			self.clearContents()
 			self.setRowCount(0)
+			self.row_cnt = 0

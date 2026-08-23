@@ -14,6 +14,7 @@ import sys
 from core.config import FULL_NAME, NAME, ORG
 from core.utils import get_window_dimension, get_title_fontsize, get_text_fontsize, get_footer_fontsize, change_widget_fontsize
 from core.drafts import import_draft_file, export_draft_file
+from core.trans_start_set import trans_start_set
 
 from ui.doi_table import DOITableWidget
 
@@ -36,6 +37,8 @@ class DOI2ref(QMainWindow):
 		self.text_fontsize = get_text_fontsize(self.size_)
 		self.footer_fontsize = get_footer_fontsize(self.size_)
 		
+		self.dialog_min_size = self.size_.width() * 2 // 3
+		
 		## Start main UI 
 
 		self.main_widget = QWidget()
@@ -51,8 +54,13 @@ class DOI2ref(QMainWindow):
 		self.sep.setFrameShape(QFrame.HLine)
 		self.main_layout.addWidget(self.sep)
 
+		# We stretch here to make the content render in the middle of the window
+		self.main_layout.addStretch()
+
 		# Content
 		self.content_layout = QStackedLayout()
+		self.content_widget = QWidget()
+		self.content_widget.setLayout(self.content_layout)
 
 		# Starting page
 		self.start_layout = QVBoxLayout()
@@ -86,7 +94,7 @@ class DOI2ref(QMainWindow):
 		self.start_layout.addWidget(self.utility_button_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		# Table that shows the DOI(s)
-		self.doi_table_widget = DOITableWidget(self.add_doi_button, self.edit_doi_button, self.delete_doi_button, self.size().width() * 2 // 3, self)
+		self.doi_table_widget = DOITableWidget(self.add_doi_button, self.edit_doi_button, self.delete_doi_button, self.dialog_min_size,  self)
 		change_widget_fontsize(self.doi_table_widget, self.text_fontsize)
 		self.doi_table_widget.setMinimumWidth(self.size().width() * 3 // 5)
 		self.start_layout.addWidget(self.doi_table_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
@@ -111,10 +119,14 @@ class DOI2ref(QMainWindow):
 		self.import_export_widget.setMaximumWidth(self.size().width() // 3)
 		self.start_layout.addWidget(self.import_export_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-		self.start_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+		self.start_next_button = QPushButton('Next >')
+		self.start_next_button.setMinimumWidth(self.size().width() // 5)
+		self.start_next_button.clicked.connect(lambda: trans_start_set(self, self.doi_table_widget.get_value(), self.dialog_min_size))
+		self.start_layout.addWidget(self.start_next_button, alignment=Qt.AlignmentFlag.AlignRight)
+
 		self.content_layout.addWidget(self.start_widget)
 
-		self.main_layout.addLayout(self.content_layout)
+		self.main_layout.addWidget(self.content_widget, alignment=Qt.AlignmentFlag.AlignCenter)
 		
 		# We add stretch here to force the footer to the bottom of the window.
 		self.main_layout.addStretch()

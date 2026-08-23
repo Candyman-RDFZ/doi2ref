@@ -15,7 +15,7 @@ class AddEditDialog(QDialog):
 		
 		self.form = QFormLayout()
 		self.form.addRow('Reference Name: ', self.name_edit)
-		self.form.addRow('DOI Number or URL: ', self.doi_edit)
+		self.form.addRow('DOI Number: ', self.doi_edit)
 		self.buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
 		self.buttons.accepted.connect(self.accept)
 		self.buttons.rejected.connect(self.reject)
