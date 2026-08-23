@@ -1,3 +1,5 @@
+"""A custom dialog when the user clickes the add/edit buttons on the start page."""
+
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QFormLayout, QLineEdit, QVBoxLayout
 
 class AddEditDialog(QDialog):

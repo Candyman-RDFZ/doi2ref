@@ -1,3 +1,5 @@
+"""Handles the draft import/exporting."""
+
 from PySide6.QtCore import QSettings, QStandardPaths
 from PySide6.QtWidgets import QFileDialog, QMessageBox
 import json

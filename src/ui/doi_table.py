@@ -1,3 +1,7 @@
+"""A custom QWidget for displaying the references entered by the user.
+Supports adding, editing, deletion, and drag-and-drop order altering.
+"""
+
 from PySide6.QtCore import Qt, QMimeData
 from PySide6.QtGui import QDrag
 from PySide6.QtWidgets import QAbstractItemView, QDialog, QTableWidget, QTableWidgetItem, QPushButton, QHeaderView, QMessageBox
