@@ -1,13 +1,22 @@
 from PySide6.QtCore import QSettings, QStandardPaths
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QFileDialog, QMessageBox
 import json
 
 def import_draft_file(parent, doi_table):
 	settings = QSettings()
 	last_dir = settings.value('last_dir', QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
 	filename, _ = QFileDialog.getOpenFileName(parent, 'Import Draft - doi2ref', last_dir, 'JSON Files (*.json)')
-	with open(filename, 'r') as file:
-		data = json.load(file)
+	if not filename:
+		return None
+	
+	try:
+		with open(filename, 'r') as file:
+			data = json.load(file)
+	except Exception:
+		dialog = QMessageBox.critical(parent, 'Error - doi2ref', f'Error when loading file "{filename}". The file is probably corrupted.', buttons=QMessageBox.Ok)
+		return None
+	if data is None:
+		return None
 	doi_table.set_value(data)
 
 def export_draft_file(parent, data):

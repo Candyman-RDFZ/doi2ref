@@ -99,11 +99,13 @@ class DOI2ref(QMainWindow):
 		self.import_draft = QPushButton('Import Draft')
 		change_widget_fontsize(self.import_draft, self.text_fontsize)
 		self.import_draft.clicked.connect(lambda: import_draft_file(self, self.doi_table_widget))
+		self.import_draft.setShortcut('Ctrl+I')
 		self.import_export_layout.addWidget(self.import_draft)
 		
 		self.export_draft = QPushButton('Export Draft')
 		change_widget_fontsize(self.export_draft, self.text_fontsize)
 		self.export_draft.clicked.connect(lambda: export_draft_file(self, self.doi_table_widget.get_value()))
+		self.export_draft.setShortcut('Ctrl+X')
 
 		self.import_export_layout.addWidget(self.export_draft)
 		self.import_export_widget.setMaximumWidth(self.size().width() // 3)
