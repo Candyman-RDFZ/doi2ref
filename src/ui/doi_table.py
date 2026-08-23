@@ -142,15 +142,21 @@ class DOITableWidget(QTableWidget):
 			
 			if choice == QMessageBox.No:
 				return None
-
 		self.clearContents()
 		
-		cur_cnt = int(data['count'])
-		self.setRowCount(cur_cnt)
-		self.row_cnt = cur_cnt
-		for i in range(cur_cnt):
-			cur_dict = data[str(i + 1)]
-			ref_name = cur_dict['ref_name']
-			doi_num = cur_dict['doi_num']
-			self.setItem(i, 0, QTableWidgetItem(ref_name))
-			self.setItem(i, 1, QTableWidgetItem(doi_num))
+		try:
+			cur_cnt = int(data['count'])
+			self.setRowCount(cur_cnt)
+			self.row_cnt = cur_cnt
+			for i in range(cur_cnt):
+				cur_dict = data[str(i + 1)]
+				ref_name = cur_dict['ref_name']
+				doi_num = cur_dict['doi_num']
+				self.setItem(i, 0, QTableWidgetItem(ref_name))
+				self.setItem(i, 1, QTableWidgetItem(doi_num))
+		except Exception:
+			dialog = QMessageBox.critical(self.parent, 'Error - doi2ref', 'The draft file cannot be loaded. The file is probably corrupted.', buttons=QMessageBox.Ok)
+
+			# We reset the table. Refilling support will be added later. 
+			self.clearContents()
+			self.setRowCount(0)
