@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QLabel, QLineEdit, QDialogButtonBox
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QLabel, QCheckBox, QLineEdit, QDialogButtonBox
 
 class RefEmptyDialog(QDialog):
 	def __init__(self, parent, ref_idx: int, has_ref_name: bool, has_doi_num: bool, ref_name, doi_num):
@@ -26,6 +27,10 @@ class RefEmptyDialog(QDialog):
 		self.ref_name_entry = QLineEdit()
 		self.doi_num_entry = QLineEdit()
 
+		self.del_ref_chk = QCheckBox('Delete this reference')
+		self.del_ref_chk.checkStateChanged.connect(self.upd_entries)
+		form.addRow(self.del_ref_chk)
+
 		if self.state == 'all':
 			form.addRow('Name: ', self.ref_name_entry)
 			form.addRow('DOI Number: ', self.doi_num_entry)
@@ -43,13 +48,29 @@ class RefEmptyDialog(QDialog):
 		layout.addLayout(form)
 		layout.addWidget(self.button_box)
 		self.setLayout(layout)
-		
+	
+	def upd_entries(self, state):
+		checked = self.del_ref_chk.isChecked()
+		self.ref_name_entry.setEnabled(not checked)
+		self.doi_num_entry.setEnabled(not checked)
+
 	def values(self):
 		ref_name = self.ref_name_entry.text()
 		doi_num = self.doi_num_entry.text()
+		if self.del_ref_chk.isChecked():
+			return None
 		if self.state == 'all':
 			return (ref_name, doi_num)
 		elif self.state == 'name':
 			return ref_name
 		else:
 			return doi_num
+
+class RefConfdupDialog(QDialog):
+	def __init__(self, parent, problem, ref_idx1, ref_idx2, dat_idx1, dat_idx2):
+		super().__init__(parent)
+
+		layout = QVBoxLayout()
+		form = QFormLayout()
+		
+#		if problem == 

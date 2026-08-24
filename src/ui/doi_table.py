@@ -64,11 +64,12 @@ class DOITableWidget(QTableWidget):
 		self.setItem(row, 0, QTableWidgetItem(name))
 		self.setItem(row, 1, QTableWidgetItem(doi))
 
-	def del_row(self):
-		sel_rows = self.selectionModel().selectedRows()
-		if not sel_rows:
-			return None
-		row = sel_rows[0].row()
+	def del_row(self, internal=False, row=None):
+		if not internal:
+			sel_rows = self.selectionModel().selectedRows()
+			if not sel_rows:
+				return None
+			row = sel_rows[0].row()
 		self.removeRow(row)
 		self.row_cnt -= 1
 	
@@ -140,8 +141,8 @@ class DOITableWidget(QTableWidget):
 			res[str(row + 1)] = {'ref_name': ref_name, 'doi_num': doi_num}
 		return res
 	
-	def set_value(self, data):
-		if self.row_cnt != 0:
+	def set_value(self, data, internal=False):
+		if self.row_cnt != 0 and not internal:
 			choice = QMessageBox.warning(self.parent, 'Warning - doi2ref', 'There is already data entered. Importing will erase the current data. Do you really want to import?', buttons=QMessageBox.Yes | QMessageBox.No, defaultButton = QMessageBox.No)
 			
 			if choice == QMessageBox.No:
