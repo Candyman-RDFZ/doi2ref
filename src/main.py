@@ -68,6 +68,7 @@ class DOI2ref(QMainWindow):
 		self.start_widget.setLayout(self.start_layout)
 
 		self.add_doi_label = QLabel('Put your DOI number(s) below:')
+		change_widget_fontsize(self.add_doi_label, self.text_fontsize)
 		self.start_layout.addWidget(self.add_doi_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.utility_button_widget = QWidget()
@@ -120,6 +121,7 @@ class DOI2ref(QMainWindow):
 		self.start_layout.addWidget(self.import_export_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		self.start_next_button = QPushButton('Next >')
+		change_widget_fontsize(self.start_next_button, self.text_fontsize)
 		self.start_next_button.setMinimumWidth(self.size().width() // 5)
 		self.start_next_button.clicked.connect(lambda: trans_start_set(self, self.doi_table_widget.get_value(), self.dialog_min_size))
 		self.start_layout.addWidget(self.start_next_button, alignment=Qt.AlignmentFlag.AlignRight)
