@@ -11,7 +11,10 @@ def trans_start_set(parent, data, dialog_min_size):
 		dialog = QMessageBox.critical(parent, 'Error - doi2ref', 'The DOI table cannot be empty.', buttons=QMessageBox.Ok)
 		return None
 
+	parent.start_next_button.setEnabled(False)
+
 	# Starts validity check
+	parent.start_next_button.setText('Checking...')
 	res = chk_all(parent, data)
 	if res == 'canceled':
 		return None

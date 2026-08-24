@@ -4,7 +4,7 @@ correct and contains no empty, conflicting, or duplicate references.
 """
 
 from PySide6.QtWidgets import QMessageBox, QDialog
-from ui.checker_dialog import RefEmptyDialog
+from ui.checker_dialog import RefEmptyDialog, RefConfdupDialog
 
 def remove_ref(data, idx):
 	count = data['count']
@@ -76,14 +76,31 @@ def chk_all(parent, data):
 				ref_idx += 1
 	
 	# Check for conflicting or duplicating references
-	for ref_idx1 in range(data['count']):
-		for ref_idx2 in range(data['count']):
-			if ref_idx1 == ref_idx2: continue
-			idx1_data = data[str(ref_idx1 + 1)]
-			idx2_data = data[str(ref_idx2 + 1)]
-			res = chk_conf_dup(idx1_data, idx2_data)
-			if res == 'dup':
-				pass
-			elif res == 'conf':
-				pass
+	ref_idx1 = 0
+	while ref_idx1 < data['count']:
+		ref_idx2 = ref_idx1 + 1
+		while ref_idx2 < data['count']:
+			while True:
+				if ref_idx2 >= data['count']: break
+				idx1_data = data[str(ref_idx1 + 1)]
+				idx2_data = data[str(ref_idx2 + 1)]
+				res = chk_conf_dup(idx1_data, idx2_data)
+				if res is None:
+					ref_idx2 += 1
+					break
+				dialog = RefConfdupDialog(parent, res, ref_idx1 + 1, ref_idx2 + 1, idx1_data, idx2_data)
+				if dialog.exec() != QDialog.Accepted:
+					return 'canceled'
+				nxt_val = dialog.values()
+				if not nxt_val['has_1']:
+					remove_ref(data, ref_idx1 + 1)
+					ref_idx2 = ref_idx1 + 1
+					break
+				if not nxt_val['has_2']:
+					remove_ref(data, ref_idx2 + 1)
+					continue
+				data[str(ref_idx1 + 1)] = nxt_val['1']
+				data[str(ref_idx2 + 1)] = nxt_val['2']
+		if ref_idx1 < data['count']:
+			ref_idx1 += 1
 	return data
