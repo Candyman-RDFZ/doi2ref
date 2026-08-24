@@ -71,9 +71,9 @@ def chk_all(parent, data):
 					remove_ref(data, ref_idx + 1)
 					break
 				data[str(ref_idx + 1)]['doi_num'] = nxt_val
-
-			if ref_idx < data['count']:
-				ref_idx += 1
+		
+		if ref_idx < data['count']:
+			ref_idx += 1
 	
 	# Check for conflicting or duplicating references
 	ref_idx1 = 0
@@ -92,6 +92,10 @@ def chk_all(parent, data):
 				if dialog.exec() != QDialog.Accepted:
 					return 'canceled'
 				nxt_val = dialog.values()
+				if not nxt_val['has_1'] and not nxt_val['has_2']:
+					remove_ref(data, ref_idx1 + 1)
+					remove_ref(data, ref_idx2)
+					break
 				if not nxt_val['has_1']:
 					remove_ref(data, ref_idx1 + 1)
 					ref_idx2 = ref_idx1 + 1

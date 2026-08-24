@@ -40,7 +40,7 @@ class RefEmptyDialog(QDialog):
 			form.addRow('DOI Number: ', self.doi_num_entry)
 		
 		button_box = QDialogButtonBox(QDialogButtonBox.Cancel)
-		continue_button = self.button_box.addButton('Continue', QDialogButtonBox.AcceptRole)
+		continue_button = button_box.addButton('Continue', QDialogButtonBox.AcceptRole)
 
 		button_box.accepted.connect(self.accept)
 		button_box.rejected.connect(self.reject)
@@ -104,7 +104,7 @@ class RefConfdupDialog(QDialog):
 		form.addRow(f'DOI Number: ', self.ref2_doi_entry)
 
 		button_box = QDialogButtonBox(QDialogButtonBox.Cancel)
-		button_box.addButton('Continue', QDialogButtonBox.AcceptRole)
+		continue_button = button_box.addButton('Continue', QDialogButtonBox.AcceptRole)
 
 		button_box.accepted.connect(self.accept)
 		button_box.rejected.connect(self.reject)

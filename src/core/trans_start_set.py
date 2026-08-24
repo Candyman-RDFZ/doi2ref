@@ -17,5 +17,8 @@ def trans_start_set(parent, data, dialog_min_size):
 	parent.start_next_button.setText('Checking...')
 	res = chk_all(parent, data)
 	if res == 'canceled':
+		# Restore the button
+		parent.start_next_button.setEnabled(True)
+		parent.start_next_button.setText('Next >')
 		return None
 	parent.doi_table_widget.set_value(data, True)
