@@ -153,7 +153,6 @@ class DOI2ref(QMainWindow):
 		self.main_widget.setLayout(self.main_layout)
 		self.setCentralWidget(self.main_widget)
 
-
 app = QApplication([])
 app.setOrganizationName(ORG)
 app.setApplicationName(NAME)

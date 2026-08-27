@@ -5,20 +5,21 @@ the main state to 'set'.
 
 from PySide6.QtWidgets import QMessageBox
 from .checker import chk_all
+from .fetcher import DOIFetcher
 
 def trans_start_set(parent, data, dialog_min_size):
 	if data is None:
 		dialog = QMessageBox.critical(parent, 'Error - doi2ref', 'The DOI table cannot be empty.', buttons=QMessageBox.Ok)
 		return None
 
-	parent.start_next_button.setEnabled(False)
+	parent.content_widget.setEnabled(False)
 
 	# Starts validity check
 	parent.start_next_button.setText('Checking...')
 	res = chk_all(parent, data)
 	if res == 'canceled':
-		# Restore the button
-		parent.start_next_button.setEnabled(True)
+		# Restore the widgets
+		parent.content_widget.setEnabled(True)
 		parent.start_next_button.setText('Next >')
 		return None
 	parent.doi_table_widget.set_value(data, True)
