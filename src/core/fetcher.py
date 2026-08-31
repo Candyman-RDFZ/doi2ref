@@ -4,8 +4,8 @@ Supports batch fetching and async requests.
 
 from PySide6.QtCore import QObject, Signal, QUrl
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
-import json
-import re
+
+from .fetcher_utils import clean_doi, valid_doi
 
 class DOIFetcher(QObject):
 	metadata_received = Signal(int, str, dict) # index, DOI, metadata
@@ -83,7 +83,7 @@ class DOIFetcher(QObject):
 		reply = self.manager.get(request)
 		reply.index = index
 		reply.doi = doi
-		reply.finished.connect(lambda: self._handl_crossref(reply))
+		reply.finished.connect(lambda: self._handle_crossref(reply))
 	
 	def _handle_crossref(self, reply):
 		index = reply.index
