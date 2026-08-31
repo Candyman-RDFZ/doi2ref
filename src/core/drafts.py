@@ -34,6 +34,8 @@ def export_draft_file(parent, data):
 	filename, _ = QFileDialog.getSaveFileName(parent, 'Export Draft - doi2ref', last_dir + '/Untitled_Draft.json', 'JSON Files (*.json)')
 
 	# We add a '.json' extension automatically if the user did not enter one.
+	if not filename or filename is None:
+		return None
 	if not filename.lower().endswith('.json'):
 		filename += '.json'
 	with open(filename, 'w') as file:
