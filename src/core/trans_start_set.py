@@ -13,11 +13,11 @@ def fetch_dois(doi_list: list):
 	errors = {}
 	cancelled = False
 	client = DOIFetcher()
-
-	def fetch_batch(doi_list: list)
+"""
+    def fetch_batch(doi_list: list):
 		nonlocal client
 		loop = QEventLoop()
-
+"""
 def trans_start_set(parent, data, dialog_min_size):
 	if data is None:
 		dialog = QMessageBox.critical(parent, 'Error - doi2ref', 'The DOI table cannot be empty.', buttons=QMessageBox.Ok)
